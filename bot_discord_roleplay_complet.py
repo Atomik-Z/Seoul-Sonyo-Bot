@@ -81,13 +81,13 @@ def calc_stat_exp(level):
 def get_seniority_role(level):
     """Retourne le rôle d'ancienneté basé sur le niveau"""
     if 1 <= level <= 9:
-        return "newcomer"
+        return "๑📧﹕newcomer﹗‧₊˚﹒ᶻz"
     elif 10 <= level <= 19:
-        return "rising"
+        return "๑🫙﹕rising ﹗‧₊˚﹒ᶻz"
     elif 20 <= level <= 29:
-        return "yapper"
+        return "๑🧴﹕yapper﹗‧₊˚﹒ᶻz"
     else:
-        return "go outside touch some grass"
+        return "๑🌿﹕go outisde touch some grass﹗‧₊˚﹒ᶻz"
 
 def get_character_limit(seniority_role):
     """Retourne la limite de personnages basée sur l'ancienneté"""
