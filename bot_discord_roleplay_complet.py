@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import Optional
 
 # Configuration du bot
-TOKEN = "VOTRE_TOKEN_ICI"  # Remplacez par votre token
+TOKEN = os.environ.get('DISCORD_TOKEN')  # Remplacez par votre token
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
