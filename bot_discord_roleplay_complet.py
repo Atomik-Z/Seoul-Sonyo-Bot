@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import Optional
 
 # Configuration du bot
-TOKEN = os.environ.get('DISCORD_TOKEN')  # Remplacez par votre token
+TOKEN = "VOTRE_TOKEN_ICI"  # Remplacez par votre token
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
@@ -207,6 +207,99 @@ async def update_seniority_roles(member, level, guild):
             print(f"❌ Pas de permission pour attribuer le rôle {new_role_name}")
     else:
         print(f"⚠️ Rôle '{new_role_name}' non trouvé sur le serveur")
+
+# === COMMANDE D'AIDE ===
+
+@bot.tree.command(name="aide", description="Affiche la liste de toutes les commandes disponibles")
+async def help_command(interaction: discord.Interaction):
+    """Affiche la liste complète des commandes du bot"""
+    embed = discord.Embed(
+        title="🤖 Guide des Commandes - Bot JdR",
+        description="Voici toutes les commandes disponibles pour le bot de jeu de rôle",
+        color=0x00d4ff
+    )
+
+    # Système de niveaux d'ancienneté
+    niveau_commands = """
+**`/niveau`** - Vérifiez votre niveau et votre XP
+• Affiche votre progression, rang d'ancienneté et statistiques
+
+**`/classement`** - Classement des membres du serveur
+• Top 15 des membres les plus actifs avec leurs niveaux
+    """
+    embed.add_field(name="📊 Système de Niveaux", value=niveau_commands, inline=False)
+
+    # Gestion des personnages
+    character_commands = """
+**`/creer_personnage <nom>`** - Créer un nouveau personnage
+• Interface interactive pour choisir spécialité et bonus
+
+**`/mes_personnages`** - Liste de vos personnages
+• Vue d'ensemble de tous vos personnages créés
+
+**`/stats_personnage <nom>`** - Statistiques détaillées
+• Voir toutes les stats d'un personnage avec barres de progression
+
+**`/entrainer <nom> <statistique>`** - Entraîner un personnage
+• Améliorer une statistique (chant, danse, éloquence, acting, fitness, esthétique)
+• Gain de 750-1250 XP + bonus de spécialité
+
+**`/supprimer_personnage <nom>`** - Supprimer un personnage
+• Suppression sécurisée avec confirmation obligatoire
+    """
+    embed.add_field(name="🎭 Gestion des Personnages", value=character_commands, inline=False)
+
+    # Spécialités disponibles
+    specialties_info = """
+**🎵 Chanteur** - Chant niveau 3
+**💃 Danseur** - Danse niveau 3  
+**🎭 Acteur** - Acting niveau 3
+**📰 Reporter** - Éloquence niveau 3
+**💪 Coach** - Fitness niveau 3
+**✨ Mannequin** - Esthétique niveau 3
+**📚 Étudiant** - +10% XP entraînement
+**👨‍🏫 Professeur** - Stat niveau 2 + 5% XP
+**⭐ Influenceur** - Réputation 1000
+**❓ Autre** - Spécialité personnalisée
+    """
+    embed.add_field(name="🎯 Spécialités Disponibles", value=specialties_info, inline=False)
+
+    # Système automatique
+    auto_system = """
+• **+3 à 5 XP** par message envoyé automatiquement
+• **Montée de niveau** automatique avec notifications
+• **Attribution des rôles** d'ancienneté automatique :
+  └ Niveaux 1-9 : **newcomer**
+  └ Niveaux 10-19 : **rising** 
+  └ Niveaux 20-29 : **yapper**
+  └ Niveau 30+ : **go outside touch some grass**
+• **Limites de personnages** basées sur l'ancienneté
+    """
+    embed.add_field(name="⚙️ Système Automatique", value=auto_system, inline=False)
+
+    # Administration (si permissions)
+    if interaction.user.guild_permissions.administrator:
+        admin_commands = """
+**`/admin_reset_user <utilisateur>`** - Reset complet d'un utilisateur
+• Supprime niveau, XP, personnages et rôles (Admin seulement)
+        """
+        embed.add_field(name="🛡️ Commandes d'Administration", value=admin_commands, inline=False)
+
+    # Informations supplémentaires
+    embed.add_field(
+        name="ℹ️ Formules et Informations",
+        value="• **Niveaux d'ancienneté** : p(1)=200, p(n+1)=p(n)×1.4\n"
+              "• **Statistiques personnage** : e(1)=5000, e(n+1)=e(n)+(120×(n+1))\n"
+              "• **Entraînement** : 750-1250 XP + bonus spécialité\n"
+              "• **Base de données SQLite** intégrée pour la persistance\n"
+              "• Toutes les actions critiques ont des **confirmations de sécurité**",
+        inline=False
+    )
+
+    embed.set_footer(text="🎮 Bot JdR • Tapez /aide pour revoir ces commandes à tout moment")
+    embed.timestamp = datetime.now()
+
+    await interaction.response.send_message(embed=embed, ephemeral=True)
 
 # === COMMANDES POUR LE SYSTÈME DE NIVEAUX ===
 
